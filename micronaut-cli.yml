@@ -1,0 +1,6 @@
+applicationType: default
+defaultPackage: com.ramiro.poclayoutcomprovantemicro
+testFramework: junit
+sourceLanguage: java
+buildTool: maven
+features: [app-name, http-client, java, java-application, junit, logback, maven, netty-server, readme, shade, vertx-mysql-client, yaml]

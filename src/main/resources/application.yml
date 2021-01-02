@@ -1,0 +1,12 @@
+micronaut:
+  application:
+    name: micro
+vertx:
+  mysql:
+    client:
+      port: 3306
+      host: 192.168.0.120
+      database: db_comprovante
+      user: user_comprovante
+      password: 123456
+      maxSize: 15
