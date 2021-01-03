@@ -20,13 +20,6 @@ public class HelloController {
 
         System.out.println(Thread.currentThread().getName());
 
-        Observable.just("A", "B", "C")
-                .flatMap(a -> {
-                    return Observable.intervalRange(1, 3, 0, 1, TimeUnit.SECONDS)
-                            .map(b -> '(' + a + ", " + b + ')');
-                })
-                .blockingSubscribe(System.out::println);
-
         return Maybe.just("Ola mundo ")
                 .map(a -> a + Thread.currentThread().getName())
                 .map(a -> a + " | testar --> " + testar(a).blockingGet());
