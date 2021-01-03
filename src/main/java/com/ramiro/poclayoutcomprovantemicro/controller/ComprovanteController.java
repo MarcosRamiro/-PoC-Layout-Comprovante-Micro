@@ -21,17 +21,12 @@ import javax.inject.Inject;
 public class ComprovanteController {
 
     private final ComprovanteService comprovanteService;
-    private final GrupoRepository grupoRepository;
-    private final ComprovanteRepository comprovanteRepository;
     private final ComprovanteBinder comprovanteBinder;
 
     @Inject
-    public ComprovanteController(ComprovanteService comprovanteService, GrupoRepository grupoRepository,
-                                 ComprovanteRepository comprovanteRepository,
+    public ComprovanteController(ComprovanteService comprovanteService,
                                  ComprovanteBinder comprovanteBinder){
         this.comprovanteService = comprovanteService;
-        this.grupoRepository = grupoRepository;
-        this.comprovanteRepository = comprovanteRepository;
         this.comprovanteBinder = comprovanteBinder;
     }
 
