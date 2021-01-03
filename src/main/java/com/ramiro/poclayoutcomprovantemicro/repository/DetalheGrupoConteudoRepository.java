@@ -30,7 +30,6 @@ public class DetalheGrupoConteudoRepository {
                 .filter(rowSet -> rowSet.size() > 0)
                 .map(rowSet -> {
                     List<DetalheGrupoConteudo> lista = new ArrayList<>();
-
                     for(Row row : rowSet){
                         lista.add(DetalheGrupoConteudo.of(row));
                     }

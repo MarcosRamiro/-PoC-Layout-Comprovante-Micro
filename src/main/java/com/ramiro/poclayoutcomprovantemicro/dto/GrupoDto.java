@@ -1,6 +1,7 @@
 package com.ramiro.poclayoutcomprovantemicro.dto;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class GrupoDto {
 	}
 
 	@JsonGetter("detalhes")
+	@JsonInclude
 	public List<DetalheGrupoDto> getDetalhesGrupos() {
 		return detalhesGrupos;
 	}

@@ -61,7 +61,7 @@ public class ComprovanteServiceImp implements ComprovanteService {
                              )
                              .filter( det -> det != null)
                              .collect(Collectors.toList());
-                     if(detalheGrupos != null && detalheGrupos.size() > 0) {
+                     if(detalheGrupos.size() > 0) {
                          List<DetalheGrupoConteudo> detalheGrupoConteudos = detalheGrupoConteudoRepository.obterDetalheGrupoConteudoPorListaDeDetalheGrupoId(obterListaDeIds(e -> e.getDetalheGrupoId(), detalheGrupos)).blockingGet();
                          associarDetalheGruposConteudoEmDetalheGrupo(detalheGrupos, detalheGrupoConteudos);
                      }

@@ -63,4 +63,14 @@ public class DetalheGrupoConteudo implements Serializable {
 		this.conteudo = conteudo;
 	}
 
+	@Override
+	public String toString() {
+		return "DetalheGrupoConteudo{" +
+				"detalheGrupoConteudoId=" + detalheGrupoConteudoId +
+				", detalheGrupoId=" + detalheGrupoId +
+				", conteudo='" + conteudo + '\'' +
+				", nomeAtributo='" + nomeAtributo + '\'' +
+				", dominioAtributoDetalheGrupoId=" + dominioAtributoDetalheGrupoId +
+				'}';
+	}
 }

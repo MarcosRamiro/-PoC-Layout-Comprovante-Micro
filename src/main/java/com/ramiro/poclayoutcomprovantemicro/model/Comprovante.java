@@ -75,4 +75,16 @@ public class Comprovante implements Serializable {
 	public long getComprovanteId() {
 		return comprovanteId;
 	}
+
+	@Override
+	public String toString() {
+		return "Comprovante{" +
+				"comprovanteId=" + comprovanteId +
+				", titulo='" + titulo + '\'' +
+				", descricao='" + descricao + '\'' +
+				", tipo='" + tipo + '\'' +
+				", versao='" + versao + '\'' +
+				", grupos=" + grupos +
+				'}';
+	}
 }

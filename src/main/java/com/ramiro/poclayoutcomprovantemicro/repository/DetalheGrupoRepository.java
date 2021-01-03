@@ -32,7 +32,7 @@ public class DetalheGrupoRepository {
 
     public Maybe<List<DetalheGrupo>> obterDetalheGrupoPorListaDeGrupoId(String listaIdsGrupos) {
 
-        return clientSql.query("select * from detalhe_grupo where detalhe_grupo_id in (" + listaIdsGrupos + ");").rxExecute()
+        return clientSql.query("select * from detalhe_grupo where grupo_id in (" + listaIdsGrupos + ");").rxExecute()
                 .filter(rowSet -> rowSet.size() > 0)
                 .map(rowSet -> {
                     List<DetalheGrupo> lista = new ArrayList<>();
