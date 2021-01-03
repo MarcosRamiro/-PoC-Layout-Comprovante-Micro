@@ -6,10 +6,11 @@ import com.ramiro.poclayoutcomprovantemicro.dto.DetalheGrupoTipoBlocoDto;
 import com.ramiro.poclayoutcomprovantemicro.dto.DetalheGrupoTipoTextoDto;
 import com.ramiro.poclayoutcomprovantemicro.model.Grupo;
 
+import javax.inject.Singleton;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+@Singleton
 public class DetalheGrupoMapper {
 
     private static final String TITULO_ATRIBUTO = "tituloAtributo";

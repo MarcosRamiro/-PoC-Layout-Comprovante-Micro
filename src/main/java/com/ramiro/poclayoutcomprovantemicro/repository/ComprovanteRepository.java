@@ -25,7 +25,7 @@ public class ComprovanteRepository {
     }
 
     public Maybe<Comprovante> obterComprovantePorTipoEVersao(String tipo, String versao){
-        System.out.println("Entrou ComprovanteRepository.obterComprovantePorTipoEVersao: " + Thread.currentThread().getName());
+
         return clientSql.query("select * from comprovante where tipo = '" + tipo + "' and versao = '" + versao + "' limit 1;").rxExecute()
                 .filter(rowSet -> rowSet.size() > 0)
                 .map(rowSet -> Comprovante.of(rowSet.iterator().next()));

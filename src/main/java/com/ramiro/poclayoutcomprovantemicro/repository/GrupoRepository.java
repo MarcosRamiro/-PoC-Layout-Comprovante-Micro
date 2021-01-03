@@ -47,7 +47,6 @@ public class GrupoRepository {
  */
 
     public Observable<List<Grupo>> obterGrupoPorComprovanteId(long comprovanteId) {
-        System.out.println("Entrou GrupoRepository.obterGrupoPorComprovanteId: " + Thread.currentThread().getName());
         return clientSql.query("select * from grupo where comprovante_id = " + comprovanteId).rxExecute()
                 .filter(rows -> rows.size() > 0)
                 .map(rowSet -> {

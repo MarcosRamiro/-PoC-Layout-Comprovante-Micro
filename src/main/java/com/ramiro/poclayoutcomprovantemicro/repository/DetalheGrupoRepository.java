@@ -31,7 +31,6 @@ public class DetalheGrupoRepository {
     }
 
     public Maybe<List<DetalheGrupo>> obterDetalheGrupoPorListaDeGrupoId(String listaIdsGrupos) {
-        System.out.println("Entrou Repo.obterDetalheGrupoPorListaDeGrupoId: " + Thread.currentThread().getName());
 
         return clientSql.query("select * from detalhe_grupo where detalhe_grupo_id in (" + listaIdsGrupos + ");").rxExecute()
                 .filter(rowSet -> rowSet.size() > 0)

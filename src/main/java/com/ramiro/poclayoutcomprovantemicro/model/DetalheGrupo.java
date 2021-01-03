@@ -63,7 +63,6 @@ public class DetalheGrupo implements Serializable {
 	}
 
 	public String obterConteudoDoAtributo(String atributo) {
-
 		Optional<DetalheGrupoConteudo> findFirst = detalheGrupoConteudo.stream()
 				.filter(c -> c.getNomeAtributo().equals(atributo)).findFirst();
 		return findFirst.isPresent() ? findFirst.get().getConteudo() : "";

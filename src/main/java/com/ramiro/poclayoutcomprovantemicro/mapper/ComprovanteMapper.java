@@ -4,10 +4,18 @@ package com.ramiro.poclayoutcomprovantemicro.mapper;
 import com.ramiro.poclayoutcomprovantemicro.dto.ComprovanteDto;
 import com.ramiro.poclayoutcomprovantemicro.model.Comprovante;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class ComprovanteMapper {
 
+    private final GrupoMapper grupoMapper;
 
-    private GrupoMapper grupoMapper;
+    @Inject
+    public ComprovanteMapper(GrupoMapper grupoMapper) {
+        this.grupoMapper = grupoMapper;
+    }
 
     public ComprovanteDto transformar(Comprovante comprovante) {
         ComprovanteDto comprovanteDto = new ComprovanteDto();

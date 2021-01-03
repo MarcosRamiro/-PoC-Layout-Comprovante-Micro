@@ -1,7 +1,7 @@
 package com.ramiro.poclayoutcomprovantemicro.service;
 
-
 import com.google.gson.GsonBuilder;
+
 import com.ramiro.poclayoutcomprovantemicro.dto.ComprovanteDto;
 import com.ramiro.poclayoutcomprovantemicro.dto.DetalheGrupoDto;
 import com.ramiro.poclayoutcomprovantemicro.dto.GrupoDto;
@@ -9,16 +9,22 @@ import com.ramiro.poclayoutcomprovantemicro.form.ComprovanteT3;
 import com.ramiro.poclayoutcomprovantemicro.mapper.ComprovanteMapper;
 import com.ramiro.poclayoutcomprovantemicro.model.Comprovante;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import java.util.List;
 
-// @RequestScope // necessario pois guarde estado (json)
-
+@Singleton
 public class ComprovanteBinder {
 
+	private final ServiceBind serviceBind;
+	private final ComprovanteMapper comprovanteMapper;
 
-	private ServiceBind serviceBind;
-
-	private ComprovanteMapper comprovanteMapper;
+	@Inject
+	public ComprovanteBinder(ServiceBind serviceBind, ComprovanteMapper comprovanteMapper) {
+		this.serviceBind = serviceBind;
+		this.comprovanteMapper = comprovanteMapper;
+	}
 
 	public ComprovanteDto bind(ComprovanteT3 comprovanteT3, Comprovante comprovante) {
 

@@ -40,46 +40,35 @@ public class ComprovanteServiceImp implements ComprovanteService {
     }
 
     public Maybe<Comprovante> obterComprovantePorTipoEVersao(String tipo, String versao) {
-        System.out.println("Entrou obterComprovantePorTipoEVersao: " + Thread.currentThread().getName());
-         Comprovante comp = comprovanteRepository.obterComprovantePorTipoEVersao(tipo, versao)
-                .blockingGet()
+         return comprovanteRepository.obterComprovantePorTipoEVersao(tipo, versao)
+                 .observeOn(Schedulers.io())
+                 .map( comprovante -> {
+                     List<Grupo> grupos = grupoRepository.obterGrupoPorComprovanteId(comprovante.getComprovanteId()).blockingFirst();
+                     comprovante.setGrupos(grupos);
+                     return comprovante;
+                 })
+                 .map(comprovante -> {
+                     List<Grupo> grupos = comprovante.getGrupos();
+                     List<DetalheGrupo> detalheGrupos = detalheGrupoRepository.obterDetalheGrupoPorListaDeGrupoId(obterListaDeIds(e -> e.getGrupoId(), grupos)).blockingGet();
+                     associarDetalheGruposEmGrupo(grupos, detalheGrupos);
 
-                ;
-        comp = complementarComprovante(comp);
+                     return comprovante;
+                 })
+                 .map(comprovante -> {
 
-         if(comp == null) return Maybe.empty();
-
-        System.out.println("Saiu obterComprovantePorTipoEVersao: " + Thread.currentThread().getName());
-
-        return
-
-                Maybe.just(comp);
-
-    }
-
-    private Comprovante complementarComprovante(Comprovante comprovante) {
-        System.out.println("Entrou complementarComprovante: " + Thread.currentThread().getName());
-
-        Comprovante comprovanteNovo  = new Comprovante();
-
-        comprovanteNovo.setComprovanteId(comprovante.getComprovanteId());
-        comprovanteNovo.setTipo(comprovante.getTipo());
-        comprovanteNovo.setVersao(comprovante.getVersao());
-        comprovanteNovo.setDescricao(comprovante.getDescricao() + " Ramiro");
-        comprovanteNovo.setTitulo(comprovante.getTitulo());
-
-        List<Grupo> grupos = grupoRepository.obterGrupoPorComprovanteId(comprovante.getComprovanteId()).blockingFirst();
-        List<DetalheGrupo> detalheGrupos = detalheGrupoRepository.obterDetalheGrupoPorListaDeGrupoId(obterListaDeIds(e -> e.getGrupoId(), grupos)).blockingGet();
-        List<DetalheGrupoConteudo> detalheGrupoConteudos = detalheGrupoConteudoRepository.obterDetalheGrupoConteudoPorListaDeDetalheGrupoId(obterListaDeIds(e -> e.getDetalheGrupoId() , detalheGrupos)).blockingGet();
-
-        associarDetalheGruposConteudoEmDetalheGrupo(detalheGrupos, detalheGrupoConteudos);
-        associarDetalheGruposEmGrupo(grupos, detalheGrupos);
-
-        System.out.println("Sai complementarComprovante: " + Thread.currentThread().getName());
-
-        comprovanteNovo.setGrupos(grupos);
-        return comprovanteNovo;
-
+                     List<DetalheGrupo> detalheGrupos = comprovante.getGrupos().stream()
+                             .flatMap(grupo -> grupo.getDetalhes().stream().map(detalheGrupo -> detalheGrupo)
+                             )
+                             .filter( det -> det != null)
+                             .collect(Collectors.toList());
+                     if(detalheGrupos != null && detalheGrupos.size() > 0) {
+                         List<DetalheGrupoConteudo> detalheGrupoConteudos = detalheGrupoConteudoRepository.obterDetalheGrupoConteudoPorListaDeDetalheGrupoId(obterListaDeIds(e -> e.getDetalheGrupoId(), detalheGrupos)).blockingGet();
+                         associarDetalheGruposConteudoEmDetalheGrupo(detalheGrupos, detalheGrupoConteudos);
+                     }
+                     return comprovante;
+                 })
+                 .observeOn(Schedulers.computation())
+                 ;
     }
 
     private void associarDetalheGruposEmGrupo(List<Grupo> grupos, List<DetalheGrupo> detalheGrupos) {

@@ -25,7 +25,6 @@ public class Comprovante implements Serializable {
 		comprovante.setDescricao(row.getString("descricao"));
 		comprovante.setTipo(row.getString("tipo"));
 		comprovante.setVersao(row.getString("versao"));
-		System.out.println("Criou objeto Comprovante: " + Thread.currentThread().getName());
     	return comprovante;
     }
 

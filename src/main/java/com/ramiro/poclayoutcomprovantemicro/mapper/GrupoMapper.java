@@ -3,14 +3,20 @@ package com.ramiro.poclayoutcomprovantemicro.mapper;
 import com.ramiro.poclayoutcomprovantemicro.dto.GrupoDto;
 import com.ramiro.poclayoutcomprovantemicro.model.Grupo;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+@Singleton
 public class GrupoMapper {
 
+    private final DetalheGrupoMapper detalheGrupoMapper;
 
-    private DetalheGrupoMapper detalheGrupoMapper;
+    @Inject
+    public GrupoMapper(DetalheGrupoMapper detalheGrupoMapper) {
+        this.detalheGrupoMapper = detalheGrupoMapper;
+    }
 
     public List<GrupoDto> transformar(List<Grupo> grupos) {
 
