@@ -3,6 +3,8 @@ package com.ramiro.poclayoutcomprovantemicro.dto;
 
 import com.ramiro.poclayoutcomprovantemicro.service.ServiceBind;
 
+import java.util.function.Function;
+
 public abstract class DetalheGrupoDto {
 
     private int ordenacao;
@@ -21,6 +23,6 @@ public abstract class DetalheGrupoDto {
         this.visibilidade = visibilidade;
     }
 
-    public abstract void tratarAtributos(ServiceBind serviceBind, String json);
+    public abstract void tratarAtributos(Function<String, String> funcao);
 
 }

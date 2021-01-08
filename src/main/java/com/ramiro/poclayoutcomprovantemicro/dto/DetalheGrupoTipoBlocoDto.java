@@ -2,6 +2,8 @@ package com.ramiro.poclayoutcomprovantemicro.dto;
 
 import com.ramiro.poclayoutcomprovantemicro.service.ServiceBind;
 
+import java.util.function.Function;
+
 public class DetalheGrupoTipoBlocoDto extends DetalheGrupoDto {
 
 	private String tituloAtributo;
@@ -20,10 +22,10 @@ public class DetalheGrupoTipoBlocoDto extends DetalheGrupoDto {
 		this.valorAtributo = valorAtributo;
 	}
 
-	@Override
-	public void tratarAtributos(ServiceBind serviceBind, String json) {
-		this.setTituloAtributo(serviceBind.bind(this.getTituloAtributo(), json));
-		this.setValorAtributo(serviceBind.bind(this.getValorAtributo(), json));
-	}
 
+	@Override
+	public void tratarAtributos(Function<String, String> funcao) {
+		this.setTituloAtributo(funcao.apply(this.getTituloAtributo()));
+		this.setValorAtributo(funcao.apply(this.getValorAtributo()));
+	}
 }

@@ -2,6 +2,8 @@ package com.ramiro.poclayoutcomprovantemicro.dto;
 
 import com.ramiro.poclayoutcomprovantemicro.service.ServiceBind;
 
+import java.util.function.Function;
+
 public class DetalheGrupoTipoTextoDto extends DetalheGrupoDto {
 
     private String texto;
@@ -14,7 +16,7 @@ public class DetalheGrupoTipoTextoDto extends DetalheGrupoDto {
     }
 
     @Override
-    public void tratarAtributos(ServiceBind serviceBind, String json) {
-        this.setTexto(serviceBind.bind(this.getTexto(), json));
+    public void tratarAtributos(Function<String, String> funcao) {
+        this.setTexto(funcao.apply(this.getTexto()));
     }
 }

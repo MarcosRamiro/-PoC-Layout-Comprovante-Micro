@@ -10,8 +10,6 @@ public class ServiceBind {
 
 		public String bind(String padrao, String json) {
 
-
-
 			if(padrao == null || json == null)
 				return null;
 
@@ -27,7 +25,5 @@ public class ServiceBind {
 					return obj == null ? "" : obj.toString();
 			}
 			return padrao;
-
-			//return padrao;
 		}
 }

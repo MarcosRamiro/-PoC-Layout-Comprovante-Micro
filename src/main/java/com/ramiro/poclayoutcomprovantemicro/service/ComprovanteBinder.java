@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import java.util.List;
+import java.util.function.Function;
 
 @Singleton
 public class ComprovanteBinder {
@@ -58,7 +59,7 @@ public class ComprovanteBinder {
 		if(detalhes == null) return;
 
 		for (DetalheGrupoDto detalhe : detalhes) {
-			detalhe.tratarAtributos(serviceBind, json);
+			detalhe.tratarAtributos(dado -> serviceBind.bind(dado, json));
 		}
 	}
 }
