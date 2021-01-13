@@ -16,6 +16,7 @@ import io.reactivex.schedulers.Schedulers;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -57,9 +58,9 @@ public class ComprovanteServiceImp implements ComprovanteService {
                  .map(comprovante -> {
 
                      List<DetalheGrupo> detalheGrupos = comprovante.getGrupos().stream()
-                             .flatMap(grupo -> grupo.getDetalhes().stream().map(detalheGrupo -> detalheGrupo)
+                             .flatMap(grupo -> grupo.getDetalhes().stream()
                              )
-                             .filter( det -> det != null)
+                             .filter(Objects::nonNull)
                              .collect(Collectors.toList());
                      if(detalheGrupos.size() > 0) {
                          List<DetalheGrupoConteudo> detalheGrupoConteudos = detalheGrupoConteudoRepository.obterDetalheGrupoConteudoPorListaDeDetalheGrupoId(obterListaDeIds(e -> e.getDetalheGrupoId(), detalheGrupos)).blockingGet();
