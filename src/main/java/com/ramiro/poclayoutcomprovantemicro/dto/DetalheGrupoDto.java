@@ -1,8 +1,5 @@
 package com.ramiro.poclayoutcomprovantemicro.dto;
 
-
-import com.ramiro.poclayoutcomprovantemicro.service.ServiceBind;
-
 import java.util.function.Function;
 
 public abstract class DetalheGrupoDto {

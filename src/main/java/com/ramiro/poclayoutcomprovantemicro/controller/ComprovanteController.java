@@ -2,8 +2,6 @@ package com.ramiro.poclayoutcomprovantemicro.controller;
 
 import com.ramiro.poclayoutcomprovantemicro.dto.ComprovanteDto;
 import com.ramiro.poclayoutcomprovantemicro.form.ComprovanteT3;
-import com.ramiro.poclayoutcomprovantemicro.repository.ComprovanteRepository;
-import com.ramiro.poclayoutcomprovantemicro.repository.GrupoRepository;
 import com.ramiro.poclayoutcomprovantemicro.service.ComprovanteBinder;
 import com.ramiro.poclayoutcomprovantemicro.service.ComprovanteService;
 
