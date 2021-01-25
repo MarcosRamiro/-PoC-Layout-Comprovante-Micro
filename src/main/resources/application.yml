@@ -9,4 +9,4 @@ vertx:
       database: db_comprovante
       user: user_comprovante
       password: 123456
-      maxSize: 15
+      maxSize: 30

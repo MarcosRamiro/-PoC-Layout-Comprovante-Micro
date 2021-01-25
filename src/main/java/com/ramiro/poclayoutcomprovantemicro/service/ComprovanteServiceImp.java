@@ -27,20 +27,30 @@ public class ComprovanteServiceImp implements ComprovanteService {
     private final GrupoRepository grupoRepository;
     private final DetalheGrupoRepository detalheGrupoRepository;
     private final DetalheGrupoConteudoRepository detalheGrupoConteudoRepository;
+    private final ComprovanteMemory comprovanteMemory;
 
     @Inject
     public ComprovanteServiceImp(ComprovanteRepository comprovanteRepository,
                                  GrupoRepository grupoRepository,
                                  DetalheGrupoRepository detalheGrupoRepository,
-                                 DetalheGrupoConteudoRepository detalheGrupoConteudoRepository
+                                 DetalheGrupoConteudoRepository detalheGrupoConteudoRepository,
+                                 ComprovanteMemory comprovanteMemory
                                 ){
         this.comprovanteRepository = comprovanteRepository;
         this.grupoRepository = grupoRepository;
         this.detalheGrupoRepository = detalheGrupoRepository;
         this.detalheGrupoConteudoRepository = detalheGrupoConteudoRepository;
+        this.comprovanteMemory = comprovanteMemory;
     }
 
     public Maybe<Comprovante> obterComprovantePorTipoEVersao(String tipo, String versao) {
+
+        Comprovante comprovanteArmezenado = comprovanteMemory.getComprovante(tipo, versao);
+
+        if (comprovanteArmezenado != null){
+            return Maybe.just(comprovanteArmezenado);
+        }
+
          return comprovanteRepository.obterComprovantePorTipoEVersao(tipo, versao)
                  .observeOn(Schedulers.io())
                  .map( comprovante -> {
@@ -66,6 +76,7 @@ public class ComprovanteServiceImp implements ComprovanteService {
                          List<DetalheGrupoConteudo> detalheGrupoConteudos = detalheGrupoConteudoRepository.obterDetalheGrupoConteudoPorListaDeDetalheGrupoId(obterListaDeIds(e -> e.getDetalheGrupoId(), detalheGrupos)).blockingGet();
                          associarDetalheGruposConteudoEmDetalheGrupo(detalheGrupos, detalheGrupoConteudos);
                      }
+                     comprovanteMemory.guardar(comprovante);
                      return comprovante;
                  })
                  .observeOn(Schedulers.computation())

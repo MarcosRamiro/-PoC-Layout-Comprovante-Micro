@@ -25,10 +25,13 @@ public class ComprovanteRepository {
     }
 
     public Maybe<Comprovante> obterComprovantePorTipoEVersao(String tipo, String versao){
-
-        return clientSql.query("select * from comprovante where tipo = '" + tipo + "' and versao = '" + versao + "' limit 1;").rxExecute()
+        String query = "select * from comprovante where tipo = '" + tipo + "' and versao = '" + versao + "' limit 1;";
+        return clientSql.query(query).rxExecute()
                 .filter(rowSet -> rowSet.size() > 0)
-                .map(rowSet -> Comprovante.of(rowSet.iterator().next()));
+                .map(rowSet -> {
+                    System.out.println(query);
+                    return Comprovante.of(rowSet.iterator().next());
+                });
     }
 
 }
