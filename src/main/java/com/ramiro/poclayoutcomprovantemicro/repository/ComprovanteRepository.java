@@ -12,20 +12,11 @@ import javax.inject.Singleton;
 @Singleton
 public class ComprovanteRepository {
 
-    private MySQLPool clientSql;
+    private final MySQLPool clientSql;
 
     @Inject
     public ComprovanteRepository(MySQLPool clientSql){
         this.clientSql = clientSql;
-    }
-
-    public Maybe<Comprovante> pesquisarPorId(Long id) {
-        final String sql = "select * from comprovante where comprovante_id = " + id.toString();
-
-        return clientSql.query(sql).rxExecute()
-                .filter(rowSet -> rowSet.size() > 0)
-                .map(rowSet -> Comprovante.of(rowSet.iterator().next()))
-                .doFinally(() -> System.out.println(sql));
     }
 
     public Maybe<Comprovante> obterComprovantePorTipoEVersao(final TipoVersao tipoVersao){
