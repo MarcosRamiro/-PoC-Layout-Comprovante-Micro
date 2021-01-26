@@ -25,8 +25,8 @@ public class DetalheGrupoConteudoRepository {
     }
 
     public  Maybe<List<DetalheGrupoConteudo>> obterDetalheGrupoConteudoPorListaDeDetalheGrupoId(String listaIds) {
-
-        return clientSql.query(CONSULTA + listaIds + ");").rxExecute()
+        final String sql = CONSULTA + listaIds + ");";
+        return clientSql.query(sql).rxExecute()
                 .filter(rowSet -> rowSet.size() > 0)
                 .map(rowSet -> {
                     List<DetalheGrupoConteudo> lista = new ArrayList<>();
@@ -36,6 +36,6 @@ public class DetalheGrupoConteudoRepository {
 
                     return lista;
 
-                });
+                }).doFinally(() -> System.out.println(sql));
     }
 }

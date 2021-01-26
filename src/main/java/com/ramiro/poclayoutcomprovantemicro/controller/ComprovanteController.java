@@ -2,17 +2,16 @@ package com.ramiro.poclayoutcomprovantemicro.controller;
 
 import com.ramiro.poclayoutcomprovantemicro.dto.ComprovanteDto;
 import com.ramiro.poclayoutcomprovantemicro.form.ComprovanteT3;
+import com.ramiro.poclayoutcomprovantemicro.form.TipoVersao;
 import com.ramiro.poclayoutcomprovantemicro.service.ComprovanteBinder;
 import com.ramiro.poclayoutcomprovantemicro.service.ComprovanteMemory;
 import com.ramiro.poclayoutcomprovantemicro.service.ComprovanteService;
 
 import io.micronaut.http.MediaType;
-import io.micronaut.http.annotation.Body;
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Post;
-import io.micronaut.http.annotation.Produces;
+import io.micronaut.http.annotation.*;
 
 import io.reactivex.Maybe;
+import io.reactivex.schedulers.Schedulers;
 
 import javax.inject.Inject;
 
@@ -33,7 +32,8 @@ public class ComprovanteController {
     @Produces(MediaType.APPLICATION_JSON)
     public Maybe<ComprovanteDto> obterComprovante(@Body ComprovanteT3 comprovanteT3){
 
-        return comprovanteService.obterComprovantePorTipoEVersao(comprovanteT3.getTipo(), comprovanteT3.getVersao())
+        return comprovanteService.obterComprovantePorTipoEVersao( new TipoVersao(comprovanteT3.getTipo(), comprovanteT3.getVersao()))
+                .observeOn(Schedulers.computation())
                 .map(comprovante -> comprovanteBinder.bind(comprovanteT3, comprovante));
 
     }

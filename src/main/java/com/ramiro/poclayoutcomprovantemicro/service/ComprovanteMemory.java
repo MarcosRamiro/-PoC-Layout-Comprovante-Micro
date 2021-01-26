@@ -1,6 +1,8 @@
 package com.ramiro.poclayoutcomprovantemicro.service;
 
+import com.ramiro.poclayoutcomprovantemicro.form.TipoVersao;
 import com.ramiro.poclayoutcomprovantemicro.model.Comprovante;
+import io.reactivex.Maybe;
 
 import javax.inject.Singleton;
 import java.time.Instant;
@@ -22,22 +24,23 @@ public class ComprovanteMemory{
         set(comprovante);
     }
 
-    public Comprovante getComprovante(String tipo, String versao) {
-        System.out.println(Thread.currentThread().getName());
-        Comprovante comprovante = get(tipo, versao);
+    public Maybe<Comprovante> getComprovante(TipoVersao tipoVersao) {
 
-        if(comprovante != null)
-            return validarTimeout(comprovante);
+        Comprovante comprovante = get(tipoVersao);
 
-        return null;
+        if(comprovante != null) {
+            comprovante = validarTimeout(comprovante);
+        }
+        if (comprovante == null)
+            return Maybe.just(new Comprovante());
+
+        return Maybe.just(comprovante);
+
     }
 
     private Comprovante validarTimeout(Comprovante comprovante) {
 
-        Instant agora = Instant.now();
-        Instant instantComprovante = getInstantComprovante(comprovante);
-
-        if(agora.isAfter(instantComprovante)){
+        if(Instant.now().isAfter(getInstantComprovante(comprovante))){
             String chave = construirChave(comprovante);
             comprovanteMap.remove(chave);
             comprovanteInstant.remove(chave);
@@ -52,19 +55,19 @@ public class ComprovanteMemory{
          return comprovanteInstant.get(construirChave(comprovante));
     }
 
-    private Comprovante get(String tipo, String versao){
-        return comprovanteMap.get(construirChave(tipo, versao));
+    private Comprovante get(TipoVersao tipoVersao){
+        return comprovanteMap.get(construirChave(tipoVersao.getTipo(), tipoVersao.getVersao()));
     }
     private Comprovante get(Comprovante comprovante) {
-        return get(comprovante.getTipo(), comprovante.getVersao());
+        return get(new TipoVersao(comprovante.getTipo(), comprovante.getVersao()));
     }
     private void set(Comprovante comprovante) {
 
         if(get(comprovante) == null)
         {
-            String comprovanteChave = construirChave(comprovante);
-            comprovanteMap.put(comprovanteChave, comprovante);
-            comprovanteInstant.put(comprovanteChave, Instant.now().plusSeconds(10));
+            String chave = construirChave(comprovante);
+            comprovanteMap.put(chave, comprovante);
+            comprovanteInstant.put(chave, Instant.now().plusSeconds(30));
         }
 
     }

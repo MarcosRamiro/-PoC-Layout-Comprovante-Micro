@@ -246,11 +246,11 @@
 		&quot;id&quot;:100000000,&#xd;
 		&quot;titulo&quot;:&quot;titulo t3 ramimar&quot;,&#xd;
 		&quot;tipo&quot;:&quot;rfb&quot;,&#xd;
-		&quot;versao&quot;:&quot;2&quot;,&#xd;
+		&quot;versao&quot;:&quot;3&quot;,&#xd;
 		&quot;detalhes&quot;:[&#xd;
 			{&#xd;
 				&quot;tituloAtributo&quot;:&quot;codigo de barras&quot;,&#xd;
-				&quot;valorAtributo&quot;:&quot;12345678901234567890&quot;&#xd;
+				&quot;valorAtributo&quot;:&quot;1234567890&quot;&#xd;
 			},&#xd;
 			{&#xd;
 				&quot;tituloAtributo&quot;:&quot;data do pagamento&quot;,&#xd;
@@ -258,7 +258,7 @@
 			},&#xd;
 			{&#xd;
 				&quot;tituloAtributo&quot;:&quot;valor do pagamento&quot;,&#xd;
-				&quot;valorAtributo&quot;:&quot;R$ 200,42&quot;&#xd;
+				&quot;valorAtributo&quot;:&quot;R$ 123456798,42&quot;&#xd;
 			},&#xd;
 			{&#xd;
 				&quot;tituloAtributo&quot;:&quot;referencia&quot;,&#xd;
@@ -307,11 +307,15 @@
                 <stringProp name="Header.name">Accept</stringProp>
                 <stringProp name="Header.value">application/json</stringProp>
               </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Encoding</stringProp>
+                <stringProp name="Header.value">UTF-8</stringProp>
+              </elementProp>
             </collectionProp>
           </HeaderManager>
           <hashTree/>
           <ResultCollector guiclass="TableVisualizer" testclass="ResultCollector" testname="Ver Resultados em Tabela" enabled="true">
-            <boolProp name="ResultCollector.error_logging">true</boolProp>
+            <boolProp name="ResultCollector.error_logging">false</boolProp>
             <objProp>
               <name>saveConfig</name>
               <value class="SampleSaveConfiguration">
@@ -349,7 +353,7 @@
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
             <stringProp name="JSON_PATH">$.grupos[0].detalhes[0].valorAtributo</stringProp>
-            <stringProp name="EXPECTED_VALUE">R$ 200,42</stringProp>
+            <stringProp name="EXPECTED_VALUE">1234567890</stringProp>
             <boolProp name="JSONVALIDATION">true</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
             <boolProp name="INVERT">false</boolProp>
@@ -663,41 +667,41 @@
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
-		&quot;id&quot;:100000000,&#xd;
-		&quot;titulo&quot;:&quot;titulo t3 ramimar&quot;,&#xd;
-		&quot;tipo&quot;:&quot;rfb&quot;,&#xd;
-		&quot;versao&quot;:&quot;2&quot;,&#xd;
-		&quot;detalhes&quot;:[&#xd;
-			{&#xd;
-				&quot;tituloAtributo&quot;:&quot;codigo de barras&quot;,&#xd;
-				&quot;valorAtributo&quot;:&quot;12345678901234567890&quot;&#xd;
-			},&#xd;
-			{&#xd;
-				&quot;tituloAtributo&quot;:&quot;data do pagamento&quot;,&#xd;
-				&quot;valorAtributo&quot;:&quot;30/11/2020&quot;&#xd;
-			},&#xd;
-			{&#xd;
-				&quot;tituloAtributo&quot;:&quot;valor do pagamento&quot;,&#xd;
-				&quot;valorAtributo&quot;:&quot;R$ 400,42&quot;&#xd;
-			},&#xd;
-			{&#xd;
-				&quot;tituloAtributo&quot;:&quot;referencia&quot;,&#xd;
-				&quot;valorAtributo&quot;:&quot;123-8&quot;&#xd;
-			},&#xd;
-			{&#xd;
-				&quot;tituloAtributo&quot;:&quot;versao autenticador&quot;,&#xd;
-				&quot;valorAtributo&quot;:&quot;v123.45&quot;&#xd;
-			},&#xd;
-			{&#xd;
-				&quot;tituloAtributo&quot;:&quot;mensagem_t3&quot;,&#xd;
-				&quot;valorAtributo&quot;:&quot;mensagem do T3&quot;&#xd;
-			},&#xd;
-			{&#xd;
-				&quot;tituloAtributo&quot;:&quot;titulo_mensagem_t3&quot;,&#xd;
-				&quot;valorAtributo&quot;:&quot;titulo do T3&quot;&#xd;
-			}&#xd;
-		]&#xd;
-	}</stringProp>
+	&quot;id&quot;: 123456,&#xd;
+	&quot;titulo&quot;: &quot;titulo t3 ramimar&quot;,&#xd;
+	&quot;tipo&quot;: &quot;rfb&quot;,&#xd;
+	&quot;versao&quot;: &quot;3&quot;,&#xd;
+	&quot;detalhes&quot;: [&#xd;
+		{&#xd;
+			&quot;tituloAtributo&quot;: &quot;codigo de barras&quot;,&#xd;
+			&quot;valorAtributo&quot;: &quot;1234567890&quot;&#xd;
+		},&#xd;
+		{&#xd;
+			&quot;tituloAtributo&quot;: &quot;data do pagamento&quot;,&#xd;
+			&quot;valorAtributo&quot;: &quot;30/11/2022&quot;&#xd;
+		},&#xd;
+		{&#xd;
+			&quot;tituloAtributo&quot;: &quot;valor do pagamento&quot;,&#xd;
+			&quot;valorAtributo&quot;: &quot;R$ 2000001,98&quot;&#xd;
+		},&#xd;
+		{&#xd;
+			&quot;tituloAtributo&quot;: &quot;referencia&quot;,&#xd;
+			&quot;valorAtributo&quot;: &quot;123-8&quot;&#xd;
+		},&#xd;
+		{&#xd;
+			&quot;tituloAtributo&quot;: &quot;versao autenticador&quot;,&#xd;
+			&quot;valorAtributo&quot;: &quot;v123.45&quot;&#xd;
+		},&#xd;
+		{&#xd;
+			&quot;tituloAtributo&quot;: &quot;mensagem_t3&quot;,&#xd;
+			&quot;valorAtributo&quot;: &quot;mensagem do T3...&quot;&#xd;
+		},&#xd;
+		{&#xd;
+			&quot;tituloAtributo&quot;: &quot;titulo_mensagem_t3&quot;,&#xd;
+			&quot;valorAtributo&quot;: &quot;titulo do T3&quot;&#xd;
+		}&#xd;
+	]&#xd;
+}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>
@@ -769,7 +773,7 @@
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
             <stringProp name="JSON_PATH">$.grupos[0].detalhes[0].valorAtributo</stringProp>
-            <stringProp name="EXPECTED_VALUE">R$ 400,42</stringProp>
+            <stringProp name="EXPECTED_VALUE">1234567890</stringProp>
             <boolProp name="JSONVALIDATION">true</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
             <boolProp name="INVERT">false</boolProp>

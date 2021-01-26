@@ -32,7 +32,9 @@ public class DetalheGrupoRepository {
 
     public Maybe<List<DetalheGrupo>> obterDetalheGrupoPorListaDeGrupoId(String listaIdsGrupos) {
 
-        return clientSql.query("select * from detalhe_grupo where grupo_id in (" + listaIdsGrupos + ");").rxExecute()
+        final String sql = "select * from detalhe_grupo where grupo_id in (" + listaIdsGrupos + ");";
+
+        return clientSql.query(sql).rxExecute()
                 .filter(rowSet -> rowSet.size() > 0)
                 .map(rowSet -> {
                     List<DetalheGrupo> lista = new ArrayList<>();
@@ -41,6 +43,6 @@ public class DetalheGrupoRepository {
                         lista.add(DetalheGrupo.of(row));
                     }
                     return lista;
-                });
+                }).doFinally(() -> System.out.println(sql));
     }
 }

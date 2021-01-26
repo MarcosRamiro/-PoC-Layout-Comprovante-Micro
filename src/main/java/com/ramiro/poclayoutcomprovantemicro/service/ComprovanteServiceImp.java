@@ -1,5 +1,6 @@
 package com.ramiro.poclayoutcomprovantemicro.service;
 
+import com.ramiro.poclayoutcomprovantemicro.form.TipoVersao;
 import com.ramiro.poclayoutcomprovantemicro.model.Comprovante;
 import com.ramiro.poclayoutcomprovantemicro.model.DetalheGrupo;
 import com.ramiro.poclayoutcomprovantemicro.model.DetalheGrupoConteudo;
@@ -10,7 +11,6 @@ import com.ramiro.poclayoutcomprovantemicro.repository.DetalheGrupoRepository;
 import com.ramiro.poclayoutcomprovantemicro.repository.GrupoRepository;
 
 import io.reactivex.Maybe;
-import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
 import javax.inject.Inject;
@@ -43,44 +43,58 @@ public class ComprovanteServiceImp implements ComprovanteService {
         this.comprovanteMemory = comprovanteMemory;
     }
 
-    public Maybe<Comprovante> obterComprovantePorTipoEVersao(String tipo, String versao) {
+    public Maybe<Comprovante> obterComprovantePorTipoEVersao(TipoVersao tipoVersao) {
 
-        Comprovante comprovanteArmezenado = comprovanteMemory.getComprovante(tipo, versao);
 
-        if (comprovanteArmezenado != null){
-            return Maybe.just(comprovanteArmezenado);
-        }
+       return Maybe.just(tipoVersao)
+               .observeOn(Schedulers.single())
+               .flatMap(tipoVersaoComprovante -> {
+                   return comprovanteMemory.getComprovante(tipoVersao);
+               })
+               .doOnError(e -> System.out.println("Erro aqui " + e.toString()))
+               .observeOn(Schedulers.io())
+               .flatMap(a -> {
 
-         return comprovanteRepository.obterComprovantePorTipoEVersao(tipo, versao)
-                 .observeOn(Schedulers.io())
-                 .map( comprovante -> {
-                     List<Grupo> grupos = grupoRepository.obterGrupoPorComprovanteId(comprovante.getComprovanteId()).blockingFirst();
-                     comprovante.setGrupos(grupos);
-                     return comprovante;
-                 })
-                 .map(comprovante -> {
-                     List<Grupo> grupos = comprovante.getGrupos();
-                     List<DetalheGrupo> detalheGrupos = detalheGrupoRepository.obterDetalheGrupoPorListaDeGrupoId(obterListaDeIds(e -> e.getGrupoId(), grupos)).blockingGet();
-                     associarDetalheGruposEmGrupo(grupos, detalheGrupos);
+                   // TODO: corrigir a gambiarra
+                   if (a.getTipo() != null)
+                       return Maybe.just(a);
 
-                     return comprovante;
-                 })
-                 .map(comprovante -> {
+                   return comprovanteRepository.obterComprovantePorTipoEVersao(tipoVersao)
+                           .observeOn(Schedulers.io())
+                           .flatMap(comprovante -> grupoRepository.obterGrupoPorComprovanteId(comprovante.getComprovanteId())
+                                            .map(grupos -> {
+                                                comprovante.setGrupos(grupos);
+                                                return comprovante;
+                                            })
+                           )
+                           .flatMap(comprovante ->
+                                detalheGrupoRepository.obterDetalheGrupoPorListaDeGrupoId(obterListaDeIds(e -> e.getGrupoId(), comprovante.getGrupos()))
+                                .map(detalheGrupos -> {
+                                   associarDetalheGruposEmGrupo(comprovante.getGrupos(), detalheGrupos);
+                                   return comprovante;
+                                })
+                           )
+                           .flatMap(comprovante -> {
+                               List<DetalheGrupo> detalheGrupos = comprovante.getGrupos().stream()
+                                       .flatMap(grupo -> grupo.getDetalhes().stream())
+                                       .filter(Objects::nonNull)
+                                       .collect(Collectors.toList());
 
-                     List<DetalheGrupo> detalheGrupos = comprovante.getGrupos().stream()
-                             .flatMap(grupo -> grupo.getDetalhes().stream()
-                             )
-                             .filter(Objects::nonNull)
-                             .collect(Collectors.toList());
-                     if(detalheGrupos.size() > 0) {
-                         List<DetalheGrupoConteudo> detalheGrupoConteudos = detalheGrupoConteudoRepository.obterDetalheGrupoConteudoPorListaDeDetalheGrupoId(obterListaDeIds(e -> e.getDetalheGrupoId(), detalheGrupos)).blockingGet();
-                         associarDetalheGruposConteudoEmDetalheGrupo(detalheGrupos, detalheGrupoConteudos);
-                     }
-                     comprovanteMemory.guardar(comprovante);
-                     return comprovante;
-                 })
-                 .observeOn(Schedulers.computation())
-                 ;
+                               if (detalheGrupos.size() > 0) {
+                                    return detalheGrupoConteudoRepository.obterDetalheGrupoConteudoPorListaDeDetalheGrupoId(obterListaDeIds(e -> e.getDetalheGrupoId(), detalheGrupos))
+                                           .map(detalheGrupoConteudos -> {
+                                               associarDetalheGruposConteudoEmDetalheGrupo(detalheGrupos, detalheGrupoConteudos);
+                                               return comprovante;
+                                           });
+
+                               }
+                               return Maybe.just(comprovante);
+
+                           })
+                           .doOnSuccess(comprovanteMemory::guardar)
+                           ;
+               });
+
     }
 
     private void associarDetalheGruposEmGrupo(List<Grupo> grupos, List<DetalheGrupo> detalheGrupos) {
@@ -105,15 +119,15 @@ public class ComprovanteServiceImp implements ComprovanteService {
     }
 
     private <E, F extends Number> String obterListaDeIds(Function<E, F> funcao, List<E> lista){
-        StringBuilder listaDeGrupos = new StringBuilder();
 
-        for(E item : lista){
-            listaDeGrupos.append(funcao.apply(item).toString() + ",");
-        }
+        StringBuilder listaDeIds = new StringBuilder();
 
-        listaDeGrupos.deleteCharAt(listaDeGrupos.lastIndexOf(","));
+        for(E item : lista)
+            listaDeIds.append(funcao.apply(item).toString() + ",");
 
-        return listaDeGrupos.toString();
+        return listaDeIds
+                .deleteCharAt(listaDeIds.lastIndexOf(","))
+                .toString();
 
     }
 

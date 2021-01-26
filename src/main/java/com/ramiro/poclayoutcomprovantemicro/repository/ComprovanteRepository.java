@@ -1,5 +1,6 @@
 package com.ramiro.poclayoutcomprovantemicro.repository;
 
+import com.ramiro.poclayoutcomprovantemicro.form.TipoVersao;
 import com.ramiro.poclayoutcomprovantemicro.model.Comprovante;
 
 import io.reactivex.Maybe;
@@ -19,19 +20,22 @@ public class ComprovanteRepository {
     }
 
     public Maybe<Comprovante> pesquisarPorId(Long id) {
-        return clientSql.query("select * from comprovante where comprovante_id = " + id.toString()).rxExecute()
+        final String sql = "select * from comprovante where comprovante_id = " + id.toString();
+
+        return clientSql.query(sql).rxExecute()
                 .filter(rowSet -> rowSet.size() > 0)
-                .map(rowSet -> Comprovante.of(rowSet.iterator().next()));
+                .map(rowSet -> Comprovante.of(rowSet.iterator().next()))
+                .doFinally(() -> System.out.println(sql));
     }
 
-    public Maybe<Comprovante> obterComprovantePorTipoEVersao(String tipo, String versao){
-        String query = "select * from comprovante where tipo = '" + tipo + "' and versao = '" + versao + "' limit 1;";
-        return clientSql.query(query).rxExecute()
+    public Maybe<Comprovante> obterComprovantePorTipoEVersao(final TipoVersao tipoVersao){
+
+        final String sql = "select * from comprovante where tipo = '" + tipoVersao.getTipo() + "' and versao = '" + tipoVersao.getVersao() + "' limit 1;";
+
+        return clientSql.query(sql).rxExecute()
                 .filter(rowSet -> rowSet.size() > 0)
-                .map(rowSet -> {
-                    System.out.println(query);
-                    return Comprovante.of(rowSet.iterator().next());
-                });
+                .map(rowSet ->Comprovante.of(rowSet.iterator().next()))
+                .doFinally(() -> System.out.println(sql));
     }
 
 }

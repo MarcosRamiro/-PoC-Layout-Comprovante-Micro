@@ -1,10 +1,10 @@
 package com.ramiro.poclayoutcomprovantemicro.repository;
 
 import com.ramiro.poclayoutcomprovantemicro.model.Grupo;
+
 import io.reactivex.*;
 import io.vertx.reactivex.sqlclient.Row;
 import io.vertx.reactivex.mysqlclient.MySQLPool;
-
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -22,40 +22,19 @@ public class GrupoRepository {
         this.clientSql = clientSql;
     }
 
-/*
-    public Maybe<Grupo> pesquisarPorId(Long id) {
+    public Maybe<List<Grupo>> obterGrupoPorComprovanteId(long comprovanteId) {
 
-        return clientSql.query("select * from grupo where grupo_id = " + id.toString()).rxExecute()
-                .filter(rowSet -> rowSet.size() > 0)
-                .map(rowSet -> Grupo.of(rowSet.iterator().next()));
-    }
+        final String sql = "select * from grupo where comprovante_id = " + comprovanteId + ";";
 
-    public List<Grupo> selecionarTodos() {
-        return clientSql.query("select * from grupo").rxExecute()
-                .map(rowSet -> {
-                    if(rowSet.size() ==0)
-                        throw new RuntimeException("not found Ramiro");
-                    List<Grupo> grupos = new ArrayList<Grupo>();
-                    for(Row row : rowSet){
-                        grupos.add(Grupo.of(row));
-                    }
-                    return grupos;
-                }).blockingGet();
-
-    }
-
- */
-
-    public Observable<List<Grupo>> obterGrupoPorComprovanteId(long comprovanteId) {
-        return clientSql.query("select * from grupo where comprovante_id = " + comprovanteId).rxExecute()
+        return clientSql.query(sql).rxExecute()
                 .filter(rows -> rows.size() > 0)
                 .map(rowSet -> {
-                    List<Grupo> grupos = new ArrayList<Grupo>();
+                    List<Grupo> grupos = new ArrayList();
                     for(Row row : rowSet){
                         grupos.add(Grupo.of(row));
                     }
                     return grupos;
-                }).toObservable();
+                }).doFinally(() -> System.out.println(sql));
 
     }
 }
