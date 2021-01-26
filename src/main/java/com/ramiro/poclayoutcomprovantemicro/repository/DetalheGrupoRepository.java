@@ -1,19 +1,11 @@
 package com.ramiro.poclayoutcomprovantemicro.repository;
 
-import com.ramiro.poclayoutcomprovantemicro.dto.DetalheGrupoDto;
-import com.ramiro.poclayoutcomprovantemicro.model.Comprovante;
 import com.ramiro.poclayoutcomprovantemicro.model.DetalheGrupo;
-import io.reactivex.Maybe;
-import io.reactivex.Scheduler;
-import io.reactivex.Single;
-import io.reactivex.schedulers.Schedulers;
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Handler;
-import io.vertx.reactivex.mysqlclient.MySQLPool;
 
+import io.reactivex.Maybe;
+
+import io.vertx.reactivex.mysqlclient.MySQLPool;
 import io.vertx.reactivex.sqlclient.Row;
-import io.vertx.sqlclient.RowSet;
-import io.vertx.sqlclient.SqlConnection;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -23,7 +15,7 @@ import java.util.List;
 @Singleton
 public class DetalheGrupoRepository {
 
-    private MySQLPool clientSql;
+    private final MySQLPool clientSql;
 
     @Inject
     public DetalheGrupoRepository(MySQLPool clientSql) {

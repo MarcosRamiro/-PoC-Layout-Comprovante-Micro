@@ -48,9 +48,7 @@ public class ComprovanteServiceImp implements ComprovanteService {
 
        return Maybe.just(tipoVersao)
                .observeOn(Schedulers.single())
-               .flatMap(tipoVersaoComprovante -> {
-                   return comprovanteMemory.getComprovante(tipoVersao);
-               })
+               .flatMap(tipoVersaoComprovante -> comprovanteMemory.getComprovante(tipoVersao))
                .doOnError(e -> System.out.println("Erro aqui " + e.toString()))
                .observeOn(Schedulers.io())
                .flatMap(a -> {
@@ -68,7 +66,7 @@ public class ComprovanteServiceImp implements ComprovanteService {
                                             })
                            )
                            .flatMap(comprovante ->
-                                detalheGrupoRepository.obterDetalheGrupoPorListaDeGrupoId(obterListaDeIds(e -> e.getGrupoId(), comprovante.getGrupos()))
+                                detalheGrupoRepository.obterDetalheGrupoPorListaDeGrupoId(obterListaDeIds(Grupo::getGrupoId, comprovante.getGrupos()))
                                 .map(detalheGrupos -> {
                                    associarDetalheGruposEmGrupo(comprovante.getGrupos(), detalheGrupos);
                                    return comprovante;
@@ -81,7 +79,7 @@ public class ComprovanteServiceImp implements ComprovanteService {
                                        .collect(Collectors.toList());
 
                                if (detalheGrupos.size() > 0) {
-                                    return detalheGrupoConteudoRepository.obterDetalheGrupoConteudoPorListaDeDetalheGrupoId(obterListaDeIds(e -> e.getDetalheGrupoId(), detalheGrupos))
+                                    return detalheGrupoConteudoRepository.obterDetalheGrupoConteudoPorListaDeDetalheGrupoId(obterListaDeIds(DetalheGrupo::getDetalheGrupoId, detalheGrupos))
                                            .map(detalheGrupoConteudos -> {
                                                associarDetalheGruposConteudoEmDetalheGrupo(detalheGrupos, detalheGrupoConteudos);
                                                return comprovante;
@@ -98,7 +96,7 @@ public class ComprovanteServiceImp implements ComprovanteService {
     }
 
     private void associarDetalheGruposEmGrupo(List<Grupo> grupos, List<DetalheGrupo> detalheGrupos) {
-        grupos.stream()
+        grupos
                 .forEach(grupo ->
                         grupo.setDetalhes(
                                 detalheGrupos.stream()
@@ -109,7 +107,7 @@ public class ComprovanteServiceImp implements ComprovanteService {
 
     private void associarDetalheGruposConteudoEmDetalheGrupo(List<DetalheGrupo> detalheGrupos, List<DetalheGrupoConteudo> detalheGrupoConteudos) {
 
-        detalheGrupos.stream()
+        detalheGrupos
                 .forEach(detalheGrupo ->
                         detalheGrupo.setDetalheGrupoConteudo(
                                 detalheGrupoConteudos.stream()
@@ -123,7 +121,7 @@ public class ComprovanteServiceImp implements ComprovanteService {
         StringBuilder listaDeIds = new StringBuilder();
 
         for(E item : lista)
-            listaDeIds.append(funcao.apply(item).toString() + ",");
+            listaDeIds.append(funcao.apply(item).toString()).append(",");
 
         return listaDeIds
                 .deleteCharAt(listaDeIds.lastIndexOf(","))

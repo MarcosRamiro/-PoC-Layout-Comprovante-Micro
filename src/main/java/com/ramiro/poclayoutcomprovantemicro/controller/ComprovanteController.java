@@ -4,7 +4,6 @@ import com.ramiro.poclayoutcomprovantemicro.dto.ComprovanteDto;
 import com.ramiro.poclayoutcomprovantemicro.form.ComprovanteT3;
 import com.ramiro.poclayoutcomprovantemicro.form.TipoVersao;
 import com.ramiro.poclayoutcomprovantemicro.service.ComprovanteBinder;
-import com.ramiro.poclayoutcomprovantemicro.service.ComprovanteMemory;
 import com.ramiro.poclayoutcomprovantemicro.service.ComprovanteService;
 
 import io.micronaut.http.MediaType;

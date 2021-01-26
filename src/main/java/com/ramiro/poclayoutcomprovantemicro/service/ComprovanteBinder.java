@@ -13,7 +13,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import java.util.List;
-import java.util.function.Function;
 
 @Singleton
 public class ComprovanteBinder {
@@ -41,7 +40,6 @@ public class ComprovanteBinder {
 		comprovanteDto.setVersao(serviceBind.bind(comprovanteDto.getVersao(), json));
 
 		comprovanteDto.getGrupos()
-				.stream()
 				.forEach(detalhe -> tratarGrupos(detalhe, json));
 
 		return comprovanteDto;

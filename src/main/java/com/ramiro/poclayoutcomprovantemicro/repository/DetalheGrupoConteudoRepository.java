@@ -1,10 +1,7 @@
 package com.ramiro.poclayoutcomprovantemicro.repository;
 
-import com.ramiro.poclayoutcomprovantemicro.model.DetalheGrupo;
 import com.ramiro.poclayoutcomprovantemicro.model.DetalheGrupoConteudo;
 import io.reactivex.Maybe;
-import io.reactivex.Single;
-import io.reactivex.schedulers.Schedulers;
 import io.vertx.reactivex.mysqlclient.MySQLPool;
 import io.vertx.reactivex.sqlclient.Row;
 

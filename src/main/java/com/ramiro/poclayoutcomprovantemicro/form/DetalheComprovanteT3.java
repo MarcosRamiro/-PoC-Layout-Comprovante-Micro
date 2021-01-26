@@ -4,6 +4,7 @@ public class DetalheComprovanteT3 {
 
 	private String tituloAtributo;
 	private String valorAtributo;
+
 	public String getTituloAtributo() {
 		return tituloAtributo;
 	}

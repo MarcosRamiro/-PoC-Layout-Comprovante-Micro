@@ -24,8 +24,6 @@ public class DetalheGrupoMapper {
                 return obterDetalheGrupoTipoBloco(grupo);
         if (grupo.getTipo().equalsIgnoreCase("texto"))
              return obterDetalheGrupoTipoTexto(grupo);
-        if (grupo.getTipo().equalsIgnoreCase("linha_horizontal"))
-             return null;
 
         return null;
     }

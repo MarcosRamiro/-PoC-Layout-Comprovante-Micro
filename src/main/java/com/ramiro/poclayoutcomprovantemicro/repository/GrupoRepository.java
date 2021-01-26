@@ -2,7 +2,7 @@ package com.ramiro.poclayoutcomprovantemicro.repository;
 
 import com.ramiro.poclayoutcomprovantemicro.model.Grupo;
 
-import io.reactivex.*;
+import io.reactivex.Maybe;
 import io.vertx.reactivex.sqlclient.Row;
 import io.vertx.reactivex.mysqlclient.MySQLPool;
 
@@ -15,7 +15,7 @@ import java.util.List;
 @Singleton
 public class GrupoRepository {
 
-    private MySQLPool clientSql;
+    private final MySQLPool clientSql;
 
     @Inject
     public GrupoRepository(MySQLPool clientSql){
