@@ -14,16 +14,17 @@ public class ServiceBind {
 				return null;
 
 			if(padrao.contains("$")) {
+
 				Object obj = JsonPath.read(json, padrao);
 
 					if(obj instanceof List<?>){
-						for (Object primeiroObjeto: (List<?>) obj) {
-							return primeiroObjeto == null ? "" : primeiroObjeto.toString();
-						}
+						String primeiroObjeto = ((List<?>) obj).stream().findFirst().isPresent() ? ((List<?>) obj).stream().findFirst().get().toString() : "";
+						return primeiroObjeto;
 					}
 
 					return obj == null ? "" : obj.toString();
 			}
+
 			return padrao;
 		}
 }

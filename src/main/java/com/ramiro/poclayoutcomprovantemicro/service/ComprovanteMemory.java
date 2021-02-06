@@ -16,8 +16,8 @@ public class ComprovanteMemory{
     private final HashMap<String, Instant> comprovanteInstant;
 
     public ComprovanteMemory() {
-        this.comprovanteMap = new HashMap();
-        this.comprovanteInstant = new HashMap();
+        this.comprovanteMap = new HashMap<>();
+        this.comprovanteInstant = new HashMap<> ();
     }
 
     public void guardar(Comprovante comprovante) {
@@ -31,6 +31,7 @@ public class ComprovanteMemory{
         if(comprovante != null) {
             comprovante = validarTimeout(comprovante);
         }
+
         if (comprovante == null)
             return Maybe.just(new Comprovante());
 

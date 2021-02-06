@@ -7,6 +7,7 @@ import com.ramiro.poclayoutcomprovantemicro.dto.DetalheGrupoTipoTextoDto;
 import com.ramiro.poclayoutcomprovantemicro.model.Grupo;
 
 import javax.inject.Singleton;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,16 +17,17 @@ public class DetalheGrupoMapper {
     private static final String TITULO_ATRIBUTO = "tituloAtributo";
     private static final String VALOR_ATRIBUTO = "valorAtributo";
     private static final String TEXTO = "texto";
+    private static final String BLOCO = "bloco";
 
 
     public List<DetalheGrupoDto> transformar(Grupo grupo) {
 
-        if (grupo.getTipo().equalsIgnoreCase("bloco"))
+        if (grupo.getTipo().equalsIgnoreCase(BLOCO))
                 return obterDetalheGrupoTipoBloco(grupo);
-        if (grupo.getTipo().equalsIgnoreCase("texto"))
+        if (grupo.getTipo().equalsIgnoreCase(TEXTO))
              return obterDetalheGrupoTipoTexto(grupo);
 
-        return null;
+        return new ArrayList<>();
     }
 
     private  List<DetalheGrupoDto> obterDetalheGrupoTipoBloco(Grupo grupo){

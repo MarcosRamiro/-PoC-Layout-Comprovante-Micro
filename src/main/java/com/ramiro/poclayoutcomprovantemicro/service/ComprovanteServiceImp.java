@@ -49,7 +49,7 @@ public class ComprovanteServiceImp implements ComprovanteService {
        return Maybe.just(tipoVersao)
                .observeOn(Schedulers.single())
                .flatMap(tipoVersaoComprovante -> comprovanteMemory.getComprovante(tipoVersao))
-               .doOnError(e -> System.out.println("Erro aqui " + e.toString()))
+               .doOnError(e -> System.err.println("Erro aqui " + e.toString()))
                .observeOn(Schedulers.io())
                .flatMap(a -> {
 
@@ -78,7 +78,7 @@ public class ComprovanteServiceImp implements ComprovanteService {
                                        .filter(Objects::nonNull)
                                        .collect(Collectors.toList());
 
-                               if (detalheGrupos.size() > 0) {
+                               if (!detalheGrupos.isEmpty()) {
                                     return detalheGrupoConteudoRepository.obterDetalheGrupoConteudoPorListaDeDetalheGrupoId(obterListaDeIds(DetalheGrupo::getDetalheGrupoId, detalheGrupos))
                                            .map(detalheGrupoConteudos -> {
                                                associarDetalheGruposConteudoEmDetalheGrupo(detalheGrupos, detalheGrupoConteudos);
