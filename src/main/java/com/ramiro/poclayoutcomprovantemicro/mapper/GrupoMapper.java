@@ -31,6 +31,7 @@ public class GrupoMapper {
         grupoDto.setTitulo(grupo.getTitulo());
         grupoDto.setTipo(grupo.getTipo());
         grupoDto.setOrdenacao(grupo.getOrdenacao());
+        grupoDto.setVisibilidade(grupo.isVisibilidade());
         grupoDto.setDetalhesGrupos(detalheGrupoMapper.transformar(grupo));
         return grupoDto;
 
