@@ -5,6 +5,6 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: mrs2006
+      MYSQL_ROOT_PASSWORD: 123456
     volumes:
       - /var/lib/mysql:/var/lib/mysql
