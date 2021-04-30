@@ -10,7 +10,7 @@ public class ServiceBind {
 
 		public String bind(String padrao, String json) {
 
-			if((!padrao.contains("$")) || padrao == null || json == null)
+			if(padrao == null || (!padrao.contains("$")) || json == null)
 				return padrao;
 
 			Object obj = JsonPath.read(json, padrao);
