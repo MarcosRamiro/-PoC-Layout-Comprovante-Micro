@@ -10,21 +10,17 @@ public class ServiceBind {
 
 		public String bind(String padrao, String json) {
 
-			if(padrao == null || json == null)
-				return null;
+			if((!padrao.contains("$")) || padrao == null || json == null)
+				return padrao;
 
-			if(padrao.contains("$")) {
+			Object obj = JsonPath.read(json, padrao);
 
-				Object obj = JsonPath.read(json, padrao);
+			if(obj instanceof List<?>)
+				return ((List<?>) obj).stream().findFirst().isPresent() ? ((List<?>) obj).stream().findFirst().get().toString() : "";
 
-					if(obj instanceof List<?>){
-						String primeiroObjeto = ((List<?>) obj).stream().findFirst().isPresent() ? ((List<?>) obj).stream().findFirst().get().toString() : "";
-						return primeiroObjeto;
-					}
+			return obj == null ? "" : obj.toString();
 
-					return obj == null ? "" : obj.toString();
-			}
 
-			return padrao;
+
 		}
 }
